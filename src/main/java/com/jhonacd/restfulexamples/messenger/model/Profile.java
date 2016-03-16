@@ -20,7 +20,7 @@ public class Profile {
 	public Profile(long pId, String pProfileName, String pFirstName, String pLastName) {
 		id = pId;
 		profileName = pProfileName;
-		firstName = profileName;
+		firstName = pFirstName;
 		lastName = pLastName;
 		created = new Date();
 	}
