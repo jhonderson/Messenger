@@ -1,6 +1,7 @@
 package com.jhonacd.restfulexamples.messenger.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +19,26 @@ public class MessageService {
 
 	public List<Message> getAllMessages() {
 		return new ArrayList<Message>(messages.values());
+	}
+
+	public List<Message> getAllMessagesByYear(int pYear) {
+		List<Message> messagesByYear = new ArrayList<Message>();
+		Calendar calendar = Calendar.getInstance();
+		for (Message message : messages.values()) {
+			calendar.setTime(message.getCreated());
+			if (calendar.get(Calendar.YEAR) == pYear) {
+				messagesByYear.add(message);
+			}
+		}
+		return messagesByYear;
+	}
+
+	public List<Message> getAllMessagesPaginated(int pStart, int pSize) {
+		List<Message> messagesPaginated = new ArrayList<Message>(messages.values());
+		if (pStart + pSize > messagesPaginated.size()) {
+			return new ArrayList<Message>();
+		}
+		return messagesPaginated.subList(pStart, pStart + pSize);
 	}
 
 	public Message getMessage(long pId) {
