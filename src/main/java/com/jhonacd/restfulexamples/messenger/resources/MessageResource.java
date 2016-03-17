@@ -2,6 +2,7 @@ package com.jhonacd.restfulexamples.messenger.resources;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -10,10 +11,10 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import com.jhonacd.restfulexamples.messenger.model.Message;
+import com.jhonacd.restfulexamples.messenger.resources.beans.MessageFilterBean;
 import com.jhonacd.restfulexamples.messenger.service.MessageService;
 
 @Path("/messages")
@@ -25,14 +26,12 @@ public class MessageResource {
 
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> getMessages(@QueryParam("year") int pYear,
-			@QueryParam("start") int pStart,
-			@QueryParam("size") int pSize) {
-		if (pYear > 0) {
-			return messageService.getAllMessagesByYear(pYear);
+	public List<Message> getMessages(@BeanParam MessageFilterBean pMessageFilterBean) {
+		if (pMessageFilterBean.getYear() > 0) {
+			return messageService.getAllMessagesByYear(pMessageFilterBean.getYear());
 		}
-		if (pStart > 0 && pSize > 0) {
-			return messageService.getAllMessagesPaginated(pStart, pSize);
+		if (pMessageFilterBean.getStart() > 0 && pMessageFilterBean.getSize() > 0) {
+			return messageService.getAllMessagesPaginated(pMessageFilterBean.getStart(), pMessageFilterBean.getSize());
 		}
 		return messageService.getAllMessages();
 	}
